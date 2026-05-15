@@ -40,12 +40,14 @@ class RecetteRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function findByFiche($value)
+public function searchOneRecette(string $mot): ?Recette
 {
     return $this->createQueryBuilder('r')
-        ->andWhere('r.fiche = :val')
-        ->setParameter('val', $value)
+        ->andWhere('r.fiche LIKE :mot')
+        ->setParameter('mot', '%' . $mot . '%')
+        ->setMaxResults(1)
         ->getQuery()
-        ->getResult();
+        ->getOneOrNullResult();
+
 }
 }

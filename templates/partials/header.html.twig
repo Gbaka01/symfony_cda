@@ -87,19 +87,17 @@
 
             </ul>
 
-            <form method="get" action="{{ path('app_recette_index') }}" class="d-flex" role="search">
-                <input
-                    class="form-control me-2"
-                    type="text"
-                    name="nom"
-                    value="{{ app.request.get('nom') }}"
-                    placeholder="Rechercher une recette"
-                    aria-label="Rechercher"
-                >
-                <button class="btn btn-outline-success" type="submit">
-                    Rechercher
-                </button>
-            </form>
+           <form class="d-flex" method="get" action="{{ path('app_recette_recherche') }}">
+    <input 
+        class="form-control me-2" 
+        type="search" 
+        name="q" 
+        placeholder="Rechercher une recette"
+    >
+    <button class="btn btn-outline-success" type="submit">
+        Rechercher
+    </button>
+</form>
 
         </div>
     </div>

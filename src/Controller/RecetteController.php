@@ -88,14 +88,35 @@ public function index(
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/recherche', name: 'app_recette_recherche')]
+public function recherche(Request $request, RecetteRepository $recetteRepository): Response
+{
+    $mot = $request->query->get('q');
+    $recette = null;
 
-    #[Route('/{id}', name: 'app_recette_show', methods: ['GET'])]
-    public function show(Recette $recette): Response
-    {
-        return $this->render('recette/show.html.twig', [
-            'recette' => $recette,
-        ]);
+    if ($mot) {
+        $recette = $recetteRepository->searchOneRecette($mot);
     }
+
+    return $this->render('recette/recherche.html.twig', [
+        'recette' => $recette,
+        'mot' => $mot,
+    ]);
+}
+
+#[Route('/{id}', name: 'app_recette_show', methods: ['GET'])]
+public function show(int $id, RecetteRepository $recetteRepository): Response
+{
+    $recette = $recetteRepository->find($id);
+
+    if (!$recette) {
+        throw $this->createNotFoundException('Recette introuvable.');
+    }
+
+    return $this->render('recette/show.html.twig', [
+        'recette' => $recette,
+    ]);
+}
 
     #[IsGranted('ROLE_MODERATOR')]
     #[Route('/{id}/edit', name: 'app_recette_edit', methods: ['GET', 'POST'])]

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche recette{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1>Recherche de recette</h1>
+
+    {% if mot %}
+        <p>Résultat pour : <strong>{{ mot }}</strong></p>
+    {% endif %}
+
+    {% if recette %}
+        <div class="card">
+            <div class="card-body">
+                <p>{{ recette.fiche }}</p>
+
+                <a href="{{ path('app_recette_show', {'id': recette.id}) }}" class="btn btn-primary">
+                    Voir la recette
+                </a>
+            </div>
+        </div>
+    {% elseif mot %}
+        <div class="alert alert-warning">
+            Aucune recette trouvée.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
