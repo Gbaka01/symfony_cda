@@ -1,0 +1,107 @@
+<header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="{{ path('app_home') }}">Bravo Cuistot</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_recette_index') }}">Recettes</a>
+                </li>
+
+                {% if is_granted('ROLE_VISITEUR') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_note_new') }}">Noter une recette</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_ingredient_new') }}">Ajouter un ingrédient</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_recette_new') }}">Créer une recette</a>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Menu Administrateur
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_user_new') }}">Ajouter un utilisateur</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_user_index') }}">Voir les utilisateurs</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_categorie_new') }}">Créer une catégorie</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('ROLE_MODERATOR') %}
+                    <li class="nav-item dropdown">
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_recette_index') }}">Gérer les recettes</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <span class="nav-link disabled">
+                            Bonjour {{ app.user.prenom }} {{ app.user.nom }}
+                        </span>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+
+            <form method="get" action="{{ path('app_recette_index') }}" class="d-flex" role="search">
+                <input
+                    class="form-control me-2"
+                    type="text"
+                    name="nom"
+                    value="{{ app.request.get('nom') }}"
+                    placeholder="Rechercher une recette"
+                    aria-label="Rechercher"
+                >
+                <button class="btn btn-outline-success" type="submit">
+                    Rechercher
+                </button>
+            </form>
+
+        </div>
+    </div>
+</nav>
+</header>
