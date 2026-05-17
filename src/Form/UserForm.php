@@ -47,7 +47,7 @@ class UserForm extends AbstractType
             'choices' => [
             'Administrateur' => "ROLE_ADMIN",
             'Visiteur' => "ROLE_VISITEUR",
-            'Moderateur' => "ROLE_MODERATEUR"],
+            'Moderateur' => "ROLE_MODERATOR"],
             'multiple' => true,
             ])
         
