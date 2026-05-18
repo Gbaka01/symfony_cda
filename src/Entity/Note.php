@@ -21,6 +21,9 @@ class Note
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
     private ?User $user = null;
+    #[ORM\ManyToOne(inversedBy: 'notes')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    
 
     public function getId(): ?int
     {

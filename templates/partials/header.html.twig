@@ -32,6 +32,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_recette_new') }}">Créer une recette</a>
                     </li>
+                    <form method="post" action="{{ path('app_account_delete') }}"
+                    onsubmit="return confirm('Voulez-vous vraiment supprimer votre compte ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_account_' ~ app.user.id) }}">
+                    <button class="btn btn-danger">Supprimer mon compte</button>
+                    </form>
                 {% endif %}
 
                 {% if is_granted('ROLE_ADMIN') %}
