@@ -57,16 +57,21 @@
                     </li>
                 {% endif %}
 
-                {% if is_granted('ROLE_MODERATOR') %}
-                    <li class="nav-item dropdown">
+{% if is_granted('ROLE_MODERATOR') %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Menu Modérateur
+        </a>
 
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_recette_index') }}">Gérer les recettes</a>
-                            </li>
-                        </ul>
-                    </li>
-                {% endif %}
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item" href="{{ path('app_recette_index') }}">
+                    Gérer les recettes
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endif %}
 
                 {% if app.user %}
                     <li class="nav-item">

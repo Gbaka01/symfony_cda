@@ -1,11 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 body {
-    /* Utilise une vraie image (.jpg, .png, .webp), pas une page HTML */
-    background-image: url('https://st3.depositphotos.com/13324256/16360/i/450/depositphotos_163603140-stock-photo-woman-cutting-mushrooms.jpg');
-    /* Typographie */
+    /* Image de fond voilée */
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.45),
+            rgba(0, 0, 0, 0.45)
+        ),
+        url('https://st3.depositphotos.com/13324256/16360/i/450/depositphotos_163603140-stock-photo-woman-cutting-mushrooms.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
     font-family: "Dancing Script", cursive;
-    font-optical-sizing: auto;
     font-weight: 700;
-    font-style: normal;
+    color: white;
+}
+
+/* Fond semi-transparent derrière le texte */
+h1, h2, h3, p, .texte {
+    background-color: rgba(0, 0, 0, 0.6); /* fond noir transparent */
+    display: inline-block;                 /* le fond épouse le texte */
+    padding: 10px 20px;
+    border-radius: 10px;
 }
