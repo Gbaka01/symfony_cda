@@ -19,10 +19,3 @@ body {
     color: white;
 }
 
-/* Fond semi-transparent derrière le texte */
-h1, h2, h3, p, .texte {
-    background-color: rgba(0, 0, 0, 0.6); /* fond noir transparent */
-    display: inline-block;                 /* le fond épouse le texte */
-    padding: 10px 20px;
-    border-radius: 10px;
-}
