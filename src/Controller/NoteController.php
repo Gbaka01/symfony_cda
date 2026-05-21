@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/note')]
 final class NoteController extends AbstractController
 {
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_VISITEUR')"))]
+    #[IsGranted('ROLE_MODERATOR')]
     #[Route(name: 'app_note_index', methods: ['GET'])]
     public function index(NoteRepository $noteRepository): Response
     {
@@ -24,7 +24,7 @@ final class NoteController extends AbstractController
             'notes' => $noteRepository->findAll(),
         ]);
     }
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_VISITEUR')"))]
+    #[IsGranted('ROLE_MODERATOR')]
     #[Route('/new', name: 'app_note_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -44,7 +44,7 @@ final class NoteController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_VISITEUR')"))]
+    #[IsGranted('ROLE_MODERATOR')]
     #[Route('/{id}', name: 'app_note_show', methods: ['GET'])]
     public function show(Note $note): Response
     {
@@ -52,7 +52,7 @@ final class NoteController extends AbstractController
             'note' => $note,
         ]);
     }
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN') or is_granted('ROLE_VISITEUR')"))]
+    #[IsGranted('ROLE_MODERATOR')]
     #[Route('/{id}/edit', name: 'app_note_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Note $note, EntityManagerInterface $entityManager): Response
     {
@@ -70,7 +70,7 @@ final class NoteController extends AbstractController
             'form' => $form,
         ]);
     }
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_MODERATOR')]
     #[Route('/{id}', name: 'app_note_delete', methods: ['POST'])]
     public function delete(Request $request, Note $note, EntityManagerInterface $entityManager): Response
     {
