@@ -19,13 +19,13 @@
             <tr>
                 <td>{{ ingredient.id }}</td>
                 <td>{{ ingredient.description }}</td>
-<td>
-    {% if ingredient.recette %}
-        {{ ingredient.recette.fiche }}
-    {% else %}
-        <em>Aucune recette</em>
-    {% endif %}
-</td>
+       <td>
+            {% if ingredient.recette %}
+                {{ ingredient.recette.description3 }}
+            {% else %}
+                <em>Aucune recette</em>
+            {% endif %}
+        </td>
                 <td>
                     
                         <a class="btn btn-warning" href="{{ path('app_ingredient_show', {'id': ingredient.id}) }}">Voir</a>

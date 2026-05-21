@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Recette;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\IngredientRepository;
 
@@ -16,10 +18,7 @@ class Ingredient
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
-
-
 #[ORM\ManyToOne(inversedBy: 'ingredients')]
-#[ORM\JoinColumn(nullable: false)]
 private ?Recette $recette = null;
 
 public function getRecette(): ?Recette
@@ -30,9 +29,12 @@ public function getRecette(): ?Recette
 public function setRecette(?Recette $recette): static
 {
     $this->recette = $recette;
-
     return $this;
 }
+
+
+
+
 
 
     
@@ -53,5 +55,7 @@ public function setRecette(?Recette $recette): static
 
         return $this;
     }
+
+
 
 }
