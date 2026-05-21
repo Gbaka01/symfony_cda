@@ -10,7 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Description</th>
-                <th>Categories</th>
+                <th>Recette</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,15 +19,13 @@
             <tr>
                 <td>{{ ingredient.id }}</td>
                 <td>{{ ingredient.description }}</td>
-                <td>
-                    <ul>
-                        {% for categorie in ingredient.categories %}
-                            <li>{{ categorie.description2 }}</li>
-                        {% else %}
-                            <li><em>Aucune catégorie</em></li>
-                        {% endfor %}
-                    </ul>
-                </td>
+<td>
+    {% if ingredient.recette %}
+        {{ ingredient.recette.fiche }}
+    {% else %}
+        <em>Aucune recette</em>
+    {% endif %}
+</td>
                 <td>
                     
                         <a class="btn btn-warning" href="{{ path('app_ingredient_show', {'id': ingredient.id}) }}">Voir</a>

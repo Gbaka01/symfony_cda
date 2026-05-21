@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Form;
-
-use App\Entity\Categorie;
 use App\Entity\Ingredient;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use App\Entity\Recette;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IngredientForm extends AbstractType
 {
@@ -24,12 +23,11 @@ class IngredientForm extends AbstractType
                     'class' => 'form-control'
                 ]
                 ])
-            ->add('categories', EntityType::class, [
-                'multiple' => true,
-                'choice_label' => 'description2',
-                'expanded' => true,
-                'class' => Categorie::class, 
-            ]) 
+      ->add ('recette', EntityType::class, [
+                'class' => Recette::class,
+                'choice_label' => 'fiche',
+            
+            ])
        
    
         ;

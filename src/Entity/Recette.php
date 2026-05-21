@@ -25,26 +25,18 @@ class Recette
     #[ORM\Column(length: 255)]
     private ?string $avatar2 = null;
 
-    /**
-     * @var Collection<int, Ingredient>
-     */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recettes')]
+    #[ORM\OneToMany(mappedBy: 'recette', targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
-    /**
-     * @var Collection<int, Categorie>
-     */
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'recettes')]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Note>
-     */
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'recette')]
     private Collection $notes;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]
     private ?User $moderatedBy = null;
+
     #[ORM\ManyToOne(inversedBy: 'recettes')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $user = null;
@@ -69,7 +61,6 @@ class Recette
     public function setDescription3(string $description3): static
     {
         $this->description3 = $description3;
-
         return $this;
     }
 
@@ -81,7 +72,6 @@ class Recette
     public function setFiche(string $fiche): static
     {
         $this->fiche = $fiche;
-
         return $this;
     }
 
@@ -93,13 +83,9 @@ class Recette
     public function setAvatar2(string $avatar2): static
     {
         $this->avatar2 = $avatar2;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Ingredient>
-     */
     public function getIngredients(): Collection
     {
         return $this->ingredients;
@@ -109,6 +95,7 @@ class Recette
     {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
+            $ingredient->setRecette($this);
         }
 
         return $this;
@@ -116,14 +103,15 @@ class Recette
 
     public function removeIngredient(Ingredient $ingredient): static
     {
-        $this->ingredients->removeElement($ingredient);
+        if ($this->ingredients->removeElement($ingredient)) {
+            if ($ingredient->getRecette() === $this) {
+                $ingredient->setRecette(null);
+            }
+        }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Categorie>
-     */
     public function getCategories(): Collection
     {
         return $this->categories;
@@ -141,38 +129,12 @@ class Recette
     public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Note>
-     */
     public function getNotes(): Collection
     {
         return $this->notes;
-    }
-
-    public function addNote(Note $note): static
-    {
-        if (!$this->notes->contains($note)) {
-            $this->notes->add($note);
-            $note->setRecette($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNote(Note $note): static
-    {
-        if ($this->notes->removeElement($note)) {
-            // set the owning side to null (unless already changed)
-            if ($note->getRecette() === $this) {
-                $note->setRecette(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getModeratedBy(): ?User
@@ -183,7 +145,6 @@ class Recette
     public function setModeratedBy(?User $moderatedBy): static
     {
         $this->moderatedBy = $moderatedBy;
-
         return $this;
     }
 }

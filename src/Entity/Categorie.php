@@ -26,16 +26,10 @@ class Categorie
     #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'categories')]
     private Collection $recettes;
 
-    /**
-     * @var Collection<int, Ingredient>
-     */
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'categories')]
-    private Collection $ingredients;
 
     public function __construct()
     {
         $this->recettes = new ArrayCollection();
-        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,31 +76,5 @@ class Categorie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Ingredient>
-     */
-    public function getIngredients(): Collection
-    {
-        return $this->ingredients;
-    }
-
-    public function addIngredient(Ingredient $ingredient): static
-    {
-        if (!$this->ingredients->contains($ingredient)) {
-            $this->ingredients->add($ingredient);
-            $ingredient->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIngredient(Ingredient $ingredient): static
-    {
-        if ($this->ingredients->removeElement($ingredient)) {
-            $ingredient->removeCategory($this);
-        }
-
-        return $this;
-    }
 }
 

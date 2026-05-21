@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Categorie;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Recette;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\IngredientRepository;
 
@@ -19,16 +17,23 @@ class Ingredient
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    /**
-     * @var Collection<int, Categorie>
-     */
-    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'ingredients')]
-    private Collection $categories;
 
-    public function __construct()
-    {
-        $this->categories = new ArrayCollection();
-    }
+#[ORM\ManyToOne(inversedBy: 'ingredients')]
+#[ORM\JoinColumn(nullable: false)]
+private ?Recette $recette = null;
+
+public function getRecette(): ?Recette
+{
+    return $this->recette;
+}
+
+public function setRecette(?Recette $recette): static
+{
+    $this->recette = $recette;
+
+    return $this;
+}
+
 
     
 
@@ -45,30 +50,6 @@ class Ingredient
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Categorie>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categorie $category): static
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): static
-    {
-        $this->categories->removeElement($category);
 
         return $this;
     }
