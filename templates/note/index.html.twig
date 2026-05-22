@@ -21,6 +21,8 @@
                 <td>
                  {% if is_granted('ROLE_VISITEUR') %}
                     <a href="{{ path('app_note_show', {'id': note.id}) }}">show</a>
+                      {% endif %}
+                {% if is_granted('ROLE_MODERATOR') %}    
                     <a href="{{ path('app_note_edit', {'id': note.id}) }}">edit</a>
                      {% endif %}
                 </td>

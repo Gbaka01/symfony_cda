@@ -16,16 +16,14 @@
                 <td>{{ ingredient.description }}</td>
             </tr>
             <tr>
-                <th>Categories</th>
-                <td>
-                    <ul>
-                        {% for categorie in ingredient.categories %}
-                            <li>{{ categorie.description2 }}</li>
-                        {% else %}
-                            <li><em>Aucune catégorie</em></li>
-                        {% endfor %}
-                    </ul>
-                </td>
+                <th>Recette</th>
+       <td>
+            {% if ingredient.recette %}
+                {{ ingredient.recette.fiche }}
+            {% else %}
+                <em>Aucune recette</em>
+            {% endif %}
+        </td>
             </tr>
         </tbody>
     </table>
