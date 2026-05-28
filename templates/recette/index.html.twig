@@ -65,9 +65,7 @@
         {% endfor %}
         </tbody>
     </table>
-{% if is_granted('ROLE_MODERATOR') %}
     <a class="btn btn-primary" href="{{ path('app_recette_new') }}" role="button">Créer nouveau</a>
 
 
-{% endif %}
 {% endblock %}
