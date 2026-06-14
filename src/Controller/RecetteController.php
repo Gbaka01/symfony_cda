@@ -17,8 +17,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/recette')]
 final class RecetteController extends AbstractController
 {
-// src/Controller/RecetteController.php
-
 #[Route('', name: 'app_recette_index', methods: ['GET'])]
 public function index(
     Request $request,
@@ -33,7 +31,6 @@ public function index(
     } else {
         $recettes = $recetteRepository->findAll();
     }
-
     return $this->render('recette/index.html.twig', [
         'recettes' => $recettes,
         'fiche' => $fiche,
