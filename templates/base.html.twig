@@ -1,42 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Bravo Cuistot{% endblock %}</title>
-        <meta name="description"
-content="Découvrez, partagez et notez des recettes de cuisine sur Bravo Cuistot.">
-   <meta name="keywords"
-          content="recettes, cuisine, gastronomie, ingrédients, plats, desserts, bravo cuistot">
-    <meta name="author" content="Goli Gore Gbaka">
- <link rel="canonical" href="https://bravocuistot-gg.fr">
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Bravo Cuistot",
-  "url": "https://bravocuistot-gg.fr/",
-  "author": {
-    "@type": "Person",
-    "name": "Goli Gore Gbaka"
-  }
-}
-</script>
-       <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
-                 
+        <meta name="description" content="{% block meta_description %}Découvrez, partagez et notez des recettes de cuisine sur Bravo Cuistot.{% endblock %}">
+        <meta name="author" content="Goli Gore Gbaka">
+        {# Canonique propre à chaque page (sans les paramètres de requête) #}
+        <link rel="canonical" href="{% block canonical %}{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}{% endblock %}">
+
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Bravo Cuistot",
+          "url": "https://bravocuistot-gg.fr/",
+          "author": { "@type": "Person", "name": "Goli Gore Gbaka" }
+        }
+        </script>
+
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍳</text></svg>">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            {# Garder UN seul système : Webpack Encore OU AssetMapper (importmap), pas les deux #}
             {{ encore_entry_script_tags('app') }}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+
+        {# ---- Consentement + Google Tag Manager ----
+           GTM n'est chargé QUE si l'utilisateur a accepté.
+           Consent Mode v2 : tout est refusé par défaut. #}
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('consent', 'default', {
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                analytics_storage: 'denied'
+            });
+
+            window.loadGTM = function () {
+                if (window.gtmLoaded) return;
+                window.gtmLoaded = true;
+                gtag('consent', 'update', {
+                    ad_storage: 'granted',
+                    ad_user_data: 'granted',
+                    ad_personalization: 'granted',
+                    analytics_storage: 'granted'
+                });
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-M2GS3LC3');
+            };
+
+            try {
+                if (localStorage.getItem('cookie_consent') === 'accepted') {
+                    window.loadGTM();
+                }
+            } catch (e) {}
+        </script>
     </head>
     <body>
-     {% include "partials/header.html.twig" %}
+        {# Le <noscript> GTM est supprimé : sans JavaScript, impossible de recueillir le consentement #}
+
+        {% include "partials/header.html.twig" %}
+
         {% block body %}{% endblock %}
-       
+
+        {% include "partials/cookie_banner.html.twig" %}
     </body>
 </html>

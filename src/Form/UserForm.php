@@ -74,9 +74,6 @@ class UserForm extends AbstractType
             'Moderateur' => "ROLE_MODERATOR"],
             'multiple' => true,
             ])
-        
-     
-     
         ;
     }
 
