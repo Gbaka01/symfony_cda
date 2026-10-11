@@ -62,11 +62,13 @@
                 })(window,document,'script','dataLayer','GTM-M2GS3LC3');
             };
 
-            try {
-                if (localStorage.getItem('cookie_consent') === 'accepted') {
-                    window.loadGTM();
-                }
-            } catch (e) {}
+     try {
+    var consentDate = +localStorage.getItem('cookie_consent_date');
+    if (localStorage.getItem('cookie_consent') === 'accepted'
+        && consentDate && Date.now() - consentDate < 1000 * 60 * 60 * 24 * 182) {
+        window.loadGTM();
+    }
+} catch (e) {}
         </script>
     </head>
     <body>

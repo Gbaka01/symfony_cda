@@ -3,77 +3,76 @@
 {% block title %}{{ recette.fiche }}{% endblock %}
 
 {% block body %}
+{% set notes = recette.notes %}
+{% set moyenne = notes|length > 0
+    ? (notes|map(n => n.note)|reduce((total, v) => total + v, 0) / notes|length)
+    : null %}
 
 <div class="container my-5 text-light">
 
     <h1 class="mb-4">{{ recette.fiche }}</h1>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
         <div>
             {% for categorie in recette.categories %}
-                <a class="badge bg-primary text-decoration-none me-2"
-                   href="{{ path('app_ingredient_index') }}">
-                    {{ categorie.description2 }}
-                </a>
+                <span class="badge bg-primary me-2">{{ categorie.description2 }}</span>
             {% else %}
                 <span class="badge bg-secondary">Aucune catégorie</span>
             {% endfor %}
         </div>
 
-        <span>Préparation : 120 minutes</span>
+        <span>Préparation : {{ recette.tempsPreparation ?? '—' }} min</span>
     </div>
 
     {% if recette.avatar2 %}
-        <div class="card mb-4">
-            <img src="{{ asset('images/' ~ recette.avatar2) }}"
-                 class="card-img-top"
-                 alt="{{ recette.fiche }}">
-        </div>
+        <img src="{{ asset('images/' ~ recette.avatar2) }}"
+             class="img-fluid rounded mb-4 w-100"
+             alt="{{ recette.fiche }}">
     {% endif %}
 
     <div class="row mb-4">
-        <div class="col-md-8">
-            <div class="border border-primary p-4 rounded" style="white-space: pre-wrap;">
+        <div class="col-md-8 mb-3 mb-md-0">
+            <div class="border border-primary p-4 rounded">
                 {{ recette.description3|nl2br }}
             </div>
         </div>
 
         <div class="col-md-4">
-            <p>Cuisson : 120 minutes</p>
+            <p>Cuisson : {{ recette.tempsCuisson ?? '—' }} min</p>
 
-            <h3>Notes</h3>
-            <ul>
-                {% for note in recette.notes %}
-                    <li>{{ note.note }} / 5</li>
-                {% else %}
-                    <li>Aucune note</li>
-                {% endfor %}
-            </ul>
+            <h3>Note moyenne</h3>
+            {% if moyenne is not null %}
+                <p>{{ moyenne|number_format(1, ',') }} / 5
+                   <small>({{ notes|length }} avis)</small></p>
+            {% else %}
+                <p>Aucune note</p>
+            {% endif %}
         </div>
     </div>
 
     <h2>Commentaires</h2>
 
+    {% set commentaires = notes|filter(n => n.description1 is not empty) %}
     <ul>
-        {% for note in recette.notes %}
-            <li>{{ note.description1 }}</li>
+        {% for note in commentaires %}
+            <li><strong>{{ note.note }}/5</strong> — {{ note.description1 }}</li>
         {% else %}
             <li>Aucun commentaire</li>
         {% endfor %}
     </ul>
 
-    <a class="btn btn-primary" href="{{ path('app_recette_index') }}">
-        Retour vers l'accueil
-    </a>
-
-    {% if is_granted('ROLE_MODERATOR') %}
-        <a class="btn btn-info" href="{{ path('app_recette_edit', {'id': recette.id}) }}">
-            Modifier
+    <div class="d-flex flex-wrap gap-2 align-items-start mt-4">
+        <a class="btn btn-primary" href="{{ path('app_recette_index') }}">
+            Retour à la liste des recettes
         </a>
 
-        {{ include('recette/_delete_form.html.twig', { recette: recette }) }}
-    {% endif %}
+        {% if is_granted('ROLE_MODERATOR') %}
+            <a class="btn btn-info" href="{{ path('app_recette_edit', {id: recette.id}) }}">
+                Modifier
+            </a>
+            {{ include('recette/_delete_form.html.twig', {recette: recette}) }}
+        {% endif %}
+    </div>
 
 </div>
-
 {% endblock %}
