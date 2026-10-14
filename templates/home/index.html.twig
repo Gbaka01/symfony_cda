@@ -1,8 +1,115 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bravo Cuistot{% endblock %}
+{# Nom du champ "libellé" de l'entité Categorie (Entrées, Desserts...) #}
+{% set champCategorie = 'description2' %}
+
+{% block title %}Bravo Cuistot – Partagez vos recettes et notez celles des autres{% endblock %}
+
+{% block meta_description %}Bravo Cuistot : découvrez des recettes faciles, partagez les vôtres et notez celles de la communauté. Entrées, plats, desserts et cuisine du monde.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
+{% endblock %}
+
+{% macro carte(recette, champCategorie, moyenne = null, nbAvis = null) %}
+  <div class="col">
+    <article class="card h-100 border-0 shadow-sm carte-recette">
+      {% if recette.avatar2 %}
+        <img src="{{ asset('images/' ~ recette.avatar2) }}" class="card-img-top" alt="{{ recette.fiche }}"
+             loading="lazy" width="400" height="260">
+      {% else %}
+        <div class="card-img-top carte-sans-image" aria-hidden="true">🍽️</div>
+      {% endif %}
+      <div class="card-body">
+        <h3 class="h6 card-title mb-2">
+          <a href="{{ path('app_recette_show', {id: recette.id}) }}" class="stretched-link text-reset text-decoration-none">{{ recette.fiche }}</a>
+        </h3>
+        <div class="d-flex flex-wrap align-items-center gap-2 small">
+          {% for cat in recette.categories %}
+            <span class="badge rounded-pill badge-bc">{{ attribute(cat, champCategorie) }}</span>
+          {% endfor %}
+          {% if moyenne is not null %}
+            <span class="note" aria-label="Note moyenne {{ moyenne }} sur 5">★ {{ moyenne|number_format(1, ',') }}
+              <span class="text-body-secondary fw-normal">({{ nbAvis }} avis)</span></span>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+  </div>
+{% endmacro %}
 
 {% block body %}
-<h1 class="text-light">Bienvenue sur le site Bravo Cuistot</h1>
-<p class="text-light">Une fois inscrit, vous serez accepté comme visiteur et vous pourrez créer des recettes</p>
+<main class="container pb-5">
+
+  {# 1. Accroche #}
+  <section class="hero text-center rounded-4 px-3 py-5 mt-4">
+    <h1 class="display-6 fw-bold mb-3">Partagez vos recettes et notez celles des autres</h1>
+    <p class="lead text-body-secondary mx-auto mb-4" style="max-width: 640px;">
+      Entrées, plats mijotés, desserts ou cuisine du monde : trouvez l'inspiration du jour
+      et faites découvrir vos meilleures recettes à la communauté Bravo Cuistot.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a href="{{ path('app_recette_index') }}" class="btn btn-outline-bc btn-lg rounded-pill">Voir les recettes</a>
+      {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_recette_new') }}" class="btn btn-bc btn-lg rounded-pill">Proposer une recette</a>
+      {% else %}
+        <a href="{{ path('app_register') }}" class="btn btn-bc btn-lg rounded-pill">Créer mon compte gratuit</a>
+      {% endif %}
+    </div>
+  </section>
+
+  {# 2. Catégories cliquables #}
+  {% if categories is not empty %}
+  <section class="mt-5">
+    <h2 class="h4 mb-3">Parcourir par catégorie</h2>
+    <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
+      {% for cat in categories %}
+        <li><a href="{{ path('app_recette_index', {categorie: cat.id}) }}" class="btn btn-light border rounded-pill">{{ attribute(cat, champCategorie) }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {# 3. Les mieux notées #}
+  {% if mieuxNotees is not empty %}
+  <section class="mt-5">
+    <h2 class="h4 mb-3">Les mieux notées</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      {% for ligne in mieuxNotees %}
+        {{ _self.carte(ligne.recette, champCategorie, ligne.moyenne, ligne.nbAvis) }}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {# 4. Les dernières recettes #}
+  <section class="mt-5">
+    <h2 class="h4 mb-3">Dernières recettes</h2>
+    {% if dernieres is not empty %}
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+        {% for recette in dernieres %}
+          {{ _self.carte(recette, champCategorie) }}
+        {% endfor %}
+      </div>
+      <p class="text-end mt-3 mb-0">
+        <a href="{{ path('app_recette_index') }}" class="link-bc fw-semibold text-decoration-none">Toutes les recettes →</a>
+      </p>
+    {% else %}
+      <p>Aucune recette pour le moment. Soyez le premier à en proposer une !</p>
+    {% endif %}
+  </section>
+
+  {# 5. Appel à l'inscription (visiteurs non connectés) #}
+  {% if not is_granted('ROLE_USER') %}
+  <section class="cta text-center text-white rounded-4 px-3 py-5 mt-5">
+    <h2 class="h3">Vous avez une recette fétiche ?</h2>
+    <p class="mx-auto mb-4" style="max-width: 560px;">
+      Inscrivez-vous gratuitement pour publier vos recettes, laisser des avis et noter vos plats préférés.
+    </p>
+    <a href="{{ path('app_register') }}" class="btn btn-light btn-lg rounded-pill fw-semibold link-bc">Je m'inscris</a>
+  </section>
+  {% endif %}
+
+</main>
 {% endblock %}

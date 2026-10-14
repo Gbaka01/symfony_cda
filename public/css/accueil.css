@@ -1,0 +1,42 @@
+/* Page d'accueil Bravo Cuistot — complète Bootstrap 5.3 (couleurs de la marque uniquement) */
+:root {
+  --bc-principal: #c0392b;
+  --bc-principal-fonce: #962d22;
+  --bc-fond-doux: #fdf6ee;
+}
+ 
+/* Bandeaux */
+.hero { background: var(--bc-fond-doux); }
+.cta  { background: var(--bc-principal); }
+ 
+/* Boutons et liens aux couleurs du site */
+.btn-bc {
+  --bs-btn-bg: var(--bc-principal);
+  --bs-btn-border-color: var(--bc-principal);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: var(--bc-principal-fonce);
+  --bs-btn-hover-border-color: var(--bc-principal-fonce);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--bc-principal-fonce);
+  --bs-btn-active-border-color: var(--bc-principal-fonce);
+}
+.btn-outline-bc {
+  --bs-btn-color: var(--bc-principal);
+  --bs-btn-border-color: var(--bc-principal);
+  --bs-btn-hover-bg: var(--bc-principal);
+  --bs-btn-hover-border-color: var(--bc-principal);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--bc-principal-fonce);
+  --bs-btn-active-border-color: var(--bc-principal-fonce);
+  border-width: 2px;
+}
+.link-bc { color: var(--bc-principal) !important; }
+ 
+/* Cartes recettes */
+.carte-recette { transition: transform .2s, box-shadow .2s; }
+.carte-recette:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.12) !important; }
+.carte-recette .card-img-top { aspect-ratio: 400 / 260; object-fit: cover; }
+.carte-sans-image { background: var(--bc-fond-doux); display: grid; place-items: center; font-size: 3rem; }
+.badge-bc { background: var(--bc-fond-doux); color: var(--bc-principal-fonce); font-weight: 500; }
+.note { color: #b7791f; font-weight: 600; }
+ 

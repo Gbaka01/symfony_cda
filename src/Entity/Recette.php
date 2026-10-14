@@ -37,8 +37,9 @@ class Recette
     #[ORM\ManyToOne(inversedBy: 'recettes')]
     private ?User $moderatedBy = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recettes')]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+#[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+
     private ?User $user = null;
 
     public function __construct()
