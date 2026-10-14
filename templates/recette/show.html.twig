@@ -38,28 +38,34 @@
         </div>
 
         <div class="col-md-4">
+            <h3>Ingrédients</h3>
+            <ul class="mb-4">
+                {% for ingredient in recette.ingredients %}
+                    <li>{{ ingredient.description }}</li>
+                {% else %}
+                    <li>Aucun ingrédient</li>
+                {% endfor %}
+            </ul>
+
             <p>Cuisson : {{ recette.tempsCuisson ?? '—' }} min</p>
 
-            <h3>Note moyenne</h3>
-            {% if moyenne is not null %}
-                <p>{{ moyenne|number_format(1, ',') }} / 5
-                   <small>({{ notes|length }} avis)</small></p>
-            {% else %}
-                <p>Aucune note</p>
-            {% endif %}
-        </div>
-    </div>
-
-    <h2>Commentaires</h2>
+        <h2 class="h4 mb-3">Commentaires</h2>
 
     {% set commentaires = notes|filter(n => n.description1 is not empty) %}
-    <ul>
-        {% for note in commentaires %}
-            <li><strong>{{ note.note }}/5</strong> — {{ note.description1 }}</li>
-        {% else %}
-            <li>Aucun commentaire</li>
-        {% endfor %}
-    </ul>
+
+    {% for note in commentaires %}
+        <div class="border border-secondary rounded p-3 mb-3">
+            <div class="text-warning mb-1" aria-label="{{ note.note }} sur 5">
+                {% for i in 1..5 %}{{ i <= note.note ? '★' : '☆' }}{% endfor %}
+                <span class="text-light ms-2">{{ note.note }}/5</span>
+            </div>
+            <p class="mb-0">{{ note.description1|nl2br }}</p>
+        </div>
+    {% else %}
+        <p class="text-secondary">Aucun commentaire pour le moment.</p>
+    {% endfor %}
+        </div>
+    </div>
 
     <div class="d-flex flex-wrap gap-2 align-items-start mt-4">
         <a class="btn btn-primary" href="{{ path('app_recette_index') }}">
