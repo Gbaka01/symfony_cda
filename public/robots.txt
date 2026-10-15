@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Pages privées ou sans intérêt pour les moteurs
+Disallow: /login
+Disallow: /logout
+Disallow: /register
+Disallow: /reset-password
+Disallow: /admin
+Disallow: /profil
+Disallow: /recette/new
+Disallow: /recette/*/edit
+
+Sitemap: https://bravocuistot-gg.fr/sitemap.xml
