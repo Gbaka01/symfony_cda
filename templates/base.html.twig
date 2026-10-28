@@ -9,25 +9,47 @@
         {# Canonique propre à chaque page (sans les paramètres de requête) #}
         <link rel="canonical" href="{% block canonical %}{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}{% endblock %}">
 
+        {# ---- Open Graph (Facebook, WhatsApp, LinkedIn…) ---- #}
+        <meta property="og:site_name" content="Bravo Cuistot">
+        <meta property="og:locale" content="fr_FR">
+        <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+        <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
+        <meta property="og:url" content="{{ block('canonical') }}">
+        <meta property="og:image" content="{% block og_image %}{{ absolute_url(asset('images/cuisine-epicee-6a08838fdd72a.jpg')) }}{% endblock %}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="{% block og_image_alt %}Bravo Cuistot – recettes de cuisine{% endblock %}">
+
+        {# ---- Twitter / X ---- #}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ block('og_title') }}">
+        <meta name="twitter:description" content="{{ block('og_description') }}">
+        <meta name="twitter:image" content="{{ block('og_image') }}">
+
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "Bravo Cuistot",
           "url": "https://bravocuistot-gg.fr/",
-          "author": { "@type": "Person", "name": "Goli Gore Gbaka" },
-          "sameAs": [
-    "https://www.reseaugbaka.fr/",
-    "https://www.gbaka.fr/",
-    "https://www.femmegore.fr/",
-    "https://www.dessinsgore.fr/",
-    "https://www.bravocuistot-gg.fr/",
-    "https://www.bravocuistot-goli.fr/",
-    "https://www.golicecile.org/",
-    "https://www.galerie-art-gore.fr/
-  ]
+          "author": {
+            "@type": "Person",
+            "name": "Goli Gore Gbaka",
+            "sameAs": [
+              "https://www.reseaugbaka.fr/",
+              "https://www.gbaka.fr/",
+              "https://www.femmegore.fr/",
+              "https://www.dessinsgore.fr/",
+              "https://www.bravocuistot-goli.fr/",
+              "https://www.golicecile.org/",
+              "https://www.galerie-art-gore.fr/"
+            ]
+          }
         }
         </script>
+
+        {# … le reste du <head> (favicon, Bootstrap, Encore, consentement/GTM) reste identique … #}
 
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍳</text></svg>">
 

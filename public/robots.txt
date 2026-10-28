@@ -11,4 +11,4 @@ Disallow: /profil
 Disallow: /recette/new
 Disallow: /recette/*/edit
 
-Sitemap: https://bravocuistot-gg.fr/sitemap.xml
+Sitemap: https://bravocuistot-gg.fr/sitemap-statique.xml

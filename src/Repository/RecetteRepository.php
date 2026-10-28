@@ -16,40 +16,6 @@ class RecetteRepository extends ServiceEntityRepository
         parent::__construct($registry, Recette::class);
     }
 
-    //    /**
-    //     * @return Recette[] Returns an array of Recette objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Recette
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-// À COPIER dans votre classe App\Repository\RecetteRepository existante.
-// La relation Recette::notes est confirmée.
-// SEUL POINT À VÉRIFIER : 'n.note' doit être le nom du champ de l'entité Note
-// qui contient la valeur de 1 à 5 (remplacez-le s'il s'appelle autrement, ex. 'n.valeur').
-
-    /**
-     * Les N dernières recettes publiées.
-     * Si vous avez un champ createdAt, triez plutôt dessus.
-     */
     public function findDernieres(int $limite = 6): array
     {
         return $this->createQueryBuilder('r')
